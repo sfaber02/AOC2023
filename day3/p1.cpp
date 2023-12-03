@@ -5,8 +5,9 @@
 
 using namespace std;
 
+
 vector<vector<char> > readFile() {
-    ifstream file("./test.txt");
+    ifstream file("./p1.txt");
 
     string line;
     vector<vector<char> > blueprint;
@@ -44,12 +45,28 @@ bool isChar(char c) {
     }
 }
 
+int makeIntAndRemove(vector<vector<char> >& bp, int row, int left, int right) {
+    string numString;
+    int num;
+    char period = '.';
+
+    for (left; left < right; left++) {
+        numString += bp[row][left];
+        bp[row][left] = period;
+        // cout << bp[row][left];
+    }
+    cout << numString << ", ";
+
+    return stoi(numString);
+    
+}
+
 int searchForNums(vector<vector<char> >& bp, int symbolRow, int symbolCol) {
+    int sum = 0;
     for (int rowMod = -1; rowMod <= 1; rowMod++) {
         int row = symbolRow + rowMod;
-        int left = 0;
-        int right = 0;
-        int sum = 0;
+        int left, right;
+        // int right;
         for (int col = 0; col < bp[row].size(); col++) {
             if (isNum(bp[row][col])){
                 left = col;
@@ -58,42 +75,19 @@ int searchForNums(vector<vector<char> >& bp, int symbolRow, int symbolCol) {
                         right++;
                 }
                 col = right - 1;
-                // for (left; left < right; left++) {
-                //     cout << bp[row][left];
-                // }
-                // cout << endl;
-                // cout << "left = " << left << " right = " << right << endl;
+                // if (right > 0) right--;
+                
 
                 if (
                 ((left >= symbolCol - 1 && left <= symbolCol + 1) && left <= right) ||
-                ((right >= symbolCol - 1 && right <= symbolCol + 1) && right >= left)
+                ((right >= symbolCol && right <= symbolCol + 2) && right >= left)
                 ) {
-                    cout << "FOUND PART =";
-                    for (left; left <= right; left++) {
-                        cout << bp[row][left];
-                    }
-                    cout << endl;
+                    sum += makeIntAndRemove(bp, row, left, right);
                 }
             }
         }
-
-        //     // this is not working
-        //     if (
-        //     ((left >= symbolCol - 1 && left <= symbolCol + 1) && left <= right) ||
-        //     ((right >= symbolCol - 1 && right <= symbolCol + 1) && right >= left)
-        //     ) {
-        //         cout << "FOUND PART ";
-        //         for (left; left <= right; left++) {
-        //             cout << bp[row][left];
-        //         }
-        //         cout << endl;
-        //     }
-        // }
-        //     cout << endl;
-            // return sum;
     }
-    //check row
-    //check lower row
+    return sum;
 }
 
 
@@ -102,14 +96,16 @@ int main() {
     //read file and create matrix
     vector<vector<char> > bp = readFile();
 
+    int sum = 0;
     for (int row = 0; row < bp.size(); row++) {
         for (int col = 0; col < bp[row].size(); col++) {
             if (isChar(bp[row][col])) {
-                searchForNums(bp, row, col);
+                sum += searchForNums(bp, row, col);
             }  
         }
     }
 
+    cout << "SUM = " << sum << endl;
     return 0;
 }
 
