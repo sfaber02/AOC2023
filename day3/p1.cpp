@@ -29,20 +29,12 @@ vector<vector<char> > readFile() {
 
 bool isNum(char c) {
     regex pattern("[0-9]");
-    if (regex_match(string(1, c), pattern)) {
-        return true;
-    } else {
-        return false;
-    }
+    return regex_match(string(1, c), pattern);
 }
 
 bool isChar(char c) {
     regex pattern("\\.");
-    if (!regex_match(string(1, c), pattern) && !isNum(c)) {
-        return true;
-    } else {
-        return false;
-    }
+    return !regex_match(string(1, c), pattern) && !isNum(c);
 }
 
 int makeIntAndRemove(vector<vector<char> >& bp, int row, int left, int right) {
@@ -55,7 +47,7 @@ int makeIntAndRemove(vector<vector<char> >& bp, int row, int left, int right) {
         bp[row][left] = period;
         // cout << bp[row][left];
     }
-    cout << numString << ", ";
+    // cout << numString << ", ";
 
     return stoi(numString);
     
@@ -66,18 +58,14 @@ int searchForNums(vector<vector<char> >& bp, int symbolRow, int symbolCol) {
     for (int rowMod = -1; rowMod <= 1; rowMod++) {
         int row = symbolRow + rowMod;
         int left, right;
-        // int right;
         for (int col = 0; col < bp[row].size(); col++) {
             if (isNum(bp[row][col])){
                 left = col;
                 right = col;
                 while (isNum(bp[row][right]) && right < bp[row].size()) {
-                        right++;
+                    right++;
                 }
                 col = right - 1;
-                // if (right > 0) right--;
-                
-
                 if (
                 ((left >= symbolCol - 1 && left <= symbolCol + 1) && left <= right) ||
                 ((right >= symbolCol && right <= symbolCol + 2) && right >= left)
@@ -105,61 +93,5 @@ int main() {
         }
     }
 
-    cout << "SUM = " << sum << endl;
     return 0;
 }
-
-/* DUMP
-void checkSymbol(vector<vector<char> >& bp, int row, int col) {
-    // look left
-    if (col > 0) {
-        if (isNum(bp[row][col - 1])) {
-            readNumber(bp, row, col - 1);
-        }
-    }
-    // look right
-    if (col < bp[row].size() - 1) {
-        if (isNum(bp[row][col + 1])) {
-            readNumber(bp, row, col + 1);
-        } 
-    }
-    // look up
-    if (row > 0) {
-        if (isNum(bp[row - 1][col])) {
-            readNumber(bp, row - 1, col);
-        } 
-    }
-    // look down
-    if (row < bp.size() - 1) {
-        if (isNum(bp[row + 1][col])) {
-            readNumber(bp, row + 1, col);
-        } 
-    }
-    // look up left
-    if (row > 0 && col > 0) {
-        if (isNum(bp[row - 1][col - 1])) {
-            readNumber(bp, row - 1, col - 1);
-        } 
-    }
-    // look up right
-    if (row > 0 && bp[row].size() - 1){
-        if (isNum(bp[row - 1][col + 1])) {
-            readNumber(bp, row - 1, col + 1);
-        }         
-    }
-    // look down left
-    if(row < bp.size() - 1 && col > 0){
-        if (isNum(bp[row + 1][col - 1])) {
-            readNumber(bp, row + 1, col - 1);
-        } 
-    }
-    // look down right
-    if(row < bp.size() - 1 && bp[row].size() - 1){
-        if (isNum(bp[row + 1][col + 1])) {
-            readNumber(bp, row + 1, col + 1);
-        } 
-    }
-}
-
-
-*/
