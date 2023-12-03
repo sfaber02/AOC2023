@@ -44,34 +44,53 @@ bool isChar(char c) {
     }
 }
 
-int readNumber(vector<vector<char> >& bp, int row, int col) {
-    cout << bp[row][col] << " READ " << endl;
-    return 0;
-}
-
-void searchForNums(vector<vector<char> >& bp, int symbolRow, int symbolCol) {
-    // check upper row
+int searchForNums(vector<vector<char> >& bp, int symbolRow, int symbolCol) {
     for (int rowMod = -1; rowMod <= 1; rowMod++) {
-        if (symbolRow > 0) {
-            int row = symbolRow + rowMod;
-            int left = 0;
-            int right = 0;
-            for (int col = 0; col < bp[row].size(); col++) {
-                if (isNum(bp[row][col])){
-                    left = col;
-                    right = col;
-                    while (isNum(right) && right < bp[row].size()) {
-                            right++;
+        int row = symbolRow + rowMod;
+        int left = 0;
+        int right = 0;
+        int sum = 0;
+        for (int col = 0; col < bp[row].size(); col++) {
+            if (isNum(bp[row][col])){
+                left = col;
+                right = col;
+                while (isNum(bp[row][right]) && right < bp[row].size()) {
+                        right++;
+                }
+                col = right - 1;
+                // for (left; left < right; left++) {
+                //     cout << bp[row][left];
+                // }
+                // cout << endl;
+                // cout << "left = " << left << " right = " << right << endl;
+
+                if (
+                ((left >= symbolCol - 1 && left <= symbolCol + 1) && left <= right) ||
+                ((right >= symbolCol - 1 && right <= symbolCol + 1) && right >= left)
+                ) {
+                    cout << "FOUND PART =";
+                    for (left; left <= right; left++) {
+                        cout << bp[row][left];
                     }
+                    cout << endl;
                 }
-                
-                for (left; left <= right; left++) {
-                    cout << bp[row][left];
-                }
-                cout << endl;
             }
         }
 
+        //     // this is not working
+        //     if (
+        //     ((left >= symbolCol - 1 && left <= symbolCol + 1) && left <= right) ||
+        //     ((right >= symbolCol - 1 && right <= symbolCol + 1) && right >= left)
+        //     ) {
+        //         cout << "FOUND PART ";
+        //         for (left; left <= right; left++) {
+        //             cout << bp[row][left];
+        //         }
+        //         cout << endl;
+        //     }
+        // }
+        //     cout << endl;
+            // return sum;
     }
     //check row
     //check lower row
