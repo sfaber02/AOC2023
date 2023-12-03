@@ -1,13 +1,10 @@
 power_of_cubes = 0
 
-with open("/Users/shawn/dev/advent-of-code/day2/test.txt", "r") as file:
+with open("/Users/shawn/dev/advent-of-code/day2/p1.txt", "r") as file:
     for line in file:
         game_dict = {}
         game_power = 0
-        current_line = line
-        # game = current_line.split(" ")
-        # game = game[1].split(":")[0].strip()
-        stones = current_line.split(":")[1].split(";")
+        stones = line.split(":")[1].split(";")
 
         for draw in stones:
             draw_dict = {}
@@ -20,7 +17,7 @@ with open("/Users/shawn/dev/advent-of-code/day2/test.txt", "r") as file:
                     draw_dict[color] += num
                 else:
                     draw_dict[color] = num
-            
+
             # compare draw_dict vals to game dict vals and update largest
             for key in draw_dict.keys():
                 if key in game_dict and game_dict[key] < draw_dict[key]:
@@ -28,14 +25,11 @@ with open("/Users/shawn/dev/advent-of-code/day2/test.txt", "r") as file:
                 elif not key in game_dict:
                     game_dict[key] = draw_dict[key]
 
-
         for key in game_dict.keys():
             if game_power == 0:
-                game_power = int(game_dict[key])
+                game_power = game_dict[key]
             else:
-                game_power *= int(game_dict[key])
-
-        print(f"game_power = {game_power}")
+                game_power *= game_dict[key]
 
         power_of_cubes += game_power
 
