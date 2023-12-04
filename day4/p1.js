@@ -12,40 +12,35 @@ const rl = readline.createInterface({
 const cards = [];
 
 rl.on('line', (line) => {
-  console.log(`Line: ${line}`);
-  cards.push(line);
+  cards.push([1, line]);
 });
 
 // Event listener when the file reading is complete
 rl.on('close', () => {
-    console.log('File reading complete.');
-    main(cards);
-    
+    main(cards);    
 });
 
 function main(cards) {
-    console.log(cards);
     final_sum = 0;
-    for (card of cards) {
-        winningNumbers = card.split("|")[0].split(":")[1].trim().split(' ');
-        console.log(winningNumbers);
-        playNumbers = card.split("|")[1].split(' ').filter(e => e !== '');
-        console.log(playNumbers);
 
-        cardSum = 0;
-        for (num of playNumbers) {
-            if (winningNumbers.includes(num)) {
-                console.log(num)
-                if (cardSum == 0) {
-                    cardSum = 1;
-                } else {
-                    cardSum *= 2;
+    for (let card = 0; card < cards.length; card++) {
+        winningNumbers = cards[card][1].split("|")[0].split(":")[1].trim().split(' ');
+        playNumbers = cards[card][1].split("|")[1].split(' ').filter(e => e !== '');
+
+        for (let numCards = 1; numCards <= cards[card][0]; numCards++) {
+            matchCount = 0;
+            for (let i = 0; i < playNumbers.length; i++) {
+                if (winningNumbers.includes(playNumbers[i])) {
+                    matchCount += 1
                 }
             }
+    
+            for (let j = card + 1; j <= matchCount + card; j++) {
+                cards[j][0]++;
+            }
         }
-        console.log(`Card Val = ${cardSum}`)
-        final_sum += cardSum;
     }
 
-    console.log (`Final Sum = ${final_sum}`);
+    finalSum = cards.map(e => e[0]).reduce((el, acc) => el + acc);
+    console.log(finalSum)
 }
