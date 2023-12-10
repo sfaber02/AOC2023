@@ -1,7 +1,7 @@
 const readline = require('readline');
 const fs = require('fs');
 
-const filePath = '/Users/shawn/dev/advent-of-code/day8/day8.txt';
+const filePath = '/Users/shawn/dev/advent-of-code/day8/.txt';
 const fileStream = fs.createReadStream(filePath);
 var fileDump = [];
 
